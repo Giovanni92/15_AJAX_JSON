@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX, JSON</title>
+    <!-- Andiamo a istanziare un oggetto di tipo xml http request (Oggetto per fare chiamate AJAX)-->
+    <script>
+        //01 - istanzio variabile ^oggetto AJAX - standard in tutti i browser moderni^;
+        var xhr = new XMLHttpRequest();
+        //02 - una volta istanziato lo passo a un metodo che si chiama open
+          //1- a cui dico il metodo  con cui voglio fare la chiamata
+          //2- l'indirizzo a cui devo chiamare 'json.php'
+            //non specifico il server perchè si trova sullo stesso server 
+             //^chiamate http devono essere sullo stesso server^
+              //visto che i file sono nella stessa cartella non è necessario tutto il path
+          //3- se la chiamata è Asincrona o sincrona (true o false)
+        xhr.open('GET','json.php', true);
+
+        //10 - Per potere inviare i dati 
+        xhr.send(); //mandiamo una richiesta vuota al server
+        //03 - per monitorare la chiamata e vedere se ha fatto la chiamata http al server e ritorna una risposta:
+         //a questa proprieta gli passo una funzione che verrà chiamata quando gli stati cambiano
+        xhr.onreadystatechange = function () {
+            //04 - per sapere se la chiamata è finita:
+             //quando è == a 4 la chiamata è pronta ed è tornata
+             // e che lo stato del server va bene (==200)
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                //se la condizione è soddisfatta vuol dire che la risposta l'abbiamo gia lato client
+                //05 - come leggere la risposta
+
+                //responseText se quello che sto ritornando è un testo
+                var resp = xhr.responseText;
+                //06 - ora dovremmo verificare che non sia una stringa vuota, che sia una stringa corretta JSON
+                 //skippiamo questo passaggio dando per certo che lo sia
+
+                 //07 - ora parsifichiamo in un oggetto la risposta
+                 var obj = JSON.parse(resp);
+
+                 //vediamo struttura oggetto
+                 console.log(obj);
+
+
+                 //08 - a questo punto mi serve un riferimento all'oggetto pre (html) e lo uso utilizzando il DOM
+                  //utilizzo il metodo dell'oggetto document 'getelementbyid' per 
+                  //avere un riferimento al tag pre, mettendoci come argomento l'id del tag pre
+                 var result = document.getElementById('result');
+                
+                 //09 - con la prop innerHTML posso scriverci dentro quello che mi è tornato dal server
+                 result.innerHTML = resp;
+
+            }
+
+        }
+
+    </script>
+</head>
+<body>
+   <!--  utilizziamo questo tag per mostrare i dati che ci arriveranno dal server -->
+    <pre id="result"> 
+       
+    </pre>
+</body>
+</html>
